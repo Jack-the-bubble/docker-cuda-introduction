@@ -1,1 +1,0 @@
-cmake -DCMAKE_CUDA_FALGS="-arch=sm_61"
