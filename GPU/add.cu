@@ -1,17 +1,17 @@
 #include <iostream>
 #include <math.h>
 
-__global__ void init(int n, float *x, float *y)
-{
-  int index = threadIdx.x + blockIdx.x * blockDim.x;
-  int stride = blockDim.x * gridDim.x;
-  #pragma unroll
-  for (int i = index; i < n; i += stride)
-  {
-    x[i] = 1.0f;
-    y[i] = 2.0f;
-  }
-}
+// __global__ void init(int n, float *x, float *y)
+// {
+//   int index = threadIdx.x + blockIdx.x * blockDim.x;
+//   int stride = blockDim.x * gridDim.x;
+//   #pragma unroll
+//   for (int i = index; i < n; i += stride)
+//   {
+//     x[i] = 1.0f;
+//     y[i] = 2.0f;
+//   }
+// }
 
 // function to add the elements of two arrays
 __global__
@@ -33,11 +33,22 @@ int main(void)
   cudaMallocManaged(&x, N*sizeof(float));
   cudaMallocManaged(&y, N*sizeof(float));
 
+  // initialize x and y arrays on the host
+  for (int i = 0; i < N; i++) {
+    x[i] = 1.0f;
+    y[i] = 2.0f;
+  }
+
+  int device;
+  cudaGetDevice(&device);
+  cudaMemPrefetchAsync(x, N*sizeof(float), device, nullptr);
+  cudaMemPrefetchAsync(y, N*sizeof(float), device, nullptr);
+
   // Run kernel on 1M elements on the GPU
   int blockSize = 256;
   int numBlocks = (N + blockSize - 1) / blockSize;
 
-  init<<<numBlocks, blockSize>>>(N, x, y);
+  // init<<<numBlocks, blockSize>>>(N, x, y);
   add<<<numBlocks, blockSize>>>(N, x, y);
 
   // Wait for GPU to finish before accessing on host
