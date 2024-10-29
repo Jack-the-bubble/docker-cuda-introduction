@@ -24,6 +24,7 @@ gtest_discover_tests(Vec3Test)
 
 
 add_executable(rt_one CPP/rt-in-one-weekend/main.cpp)
+target_include_directories(rt_one PUBLIC CPP/rt-in-one-weekend/include)
 
 add_executable(cpp_add CPP/add.cpp)
 
