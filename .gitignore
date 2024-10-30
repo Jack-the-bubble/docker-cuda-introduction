@@ -4,6 +4,8 @@
 *.ptx
 *.cubin
 *.fatbin
+*.ppm
 
 build/**
 nvvp_ws/**
+.vscode/**
