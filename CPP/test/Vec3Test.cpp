@@ -4,7 +4,7 @@
 
 
 TEST(Vec3Test, AccessingValuesTest) {
-    const auto v1 = Vec3(1, 2, 3);
+    const auto v1 = RT::Vec3(1, 2, 3);
     EXPECT_EQ(v1[0], 1);
     EXPECT_EQ(v1[1], 2);
     EXPECT_EQ(v1[2], 3);

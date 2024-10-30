@@ -1,16 +1,24 @@
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(cuda_introduction LANGUAGES CXX CUDA)
 
-# GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(ROOT_CPP_DIR CPP/rt-in-one-weekend)
+
 ############################### C++
-# Vec3
+# Chapter 1
+
+add_executable(rt_one CPP/rt-in-one-weekend/main.cpp)
+target_include_directories(rt_one PUBLIC CPP/rt-in-one-weekend/include)
+
+add_executable(cpp_add CPP/add.cpp)
+
+# Chapter 2
 include(FetchContent)
 FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+googletest
+URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
 FetchContent_MakeAvailable(googletest)
 
@@ -22,11 +30,10 @@ target_link_libraries(Vec3Test GTest::gtest_main)
 include(GoogleTest)
 gtest_discover_tests(Vec3Test)
 
+  # Chapter 3
 
-add_executable(rt_one CPP/rt-in-one-weekend/main.cpp)
-target_include_directories(rt_one PUBLIC CPP/rt-in-one-weekend/include)
-
-add_executable(cpp_add CPP/add.cpp)
+add_executable(blue_ray CPP/rt-in-one-weekend/src/ray_first.cpp)
+target_include_directories(blue_ray PUBLIC CPP/rt-in-one-weekend/include)
 
 
 
@@ -40,4 +47,4 @@ set_property(TARGET simple_add
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(simple_add PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
 endif()
-    
+

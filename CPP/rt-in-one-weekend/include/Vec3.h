@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <iostream>
 
+namespace RT {
+
 class Vec3 {
 public:
     Vec3 () = default;
@@ -144,8 +146,9 @@ inline Vec3 operator/(const Vec3&v, const float t) {
     return Vec3(v[0] / t, v[1] / t, v[2] / t);
 }
 
-// what for? multiply was already defined
-// inline operator*
+inline Vec3 operator*(const float t, const Vec3 &v) {
+    return Vec3(t * v[0], t * v[1], t * v[2]);
+}
 
 inline float dot(const Vec3 &v1, const Vec3 &v2) {
     return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
@@ -160,5 +163,5 @@ inline Vec3 cross(const Vec3 &v1, const Vec3 &v2) {
 inline Vec3 unit_vector(const Vec3 &v) {
     return v / v.length();
 }
-
+} // RT
 #endif  // RT_VEC3_H
