@@ -30,10 +30,15 @@ target_link_libraries(Vec3Test GTest::gtest_main)
 include(GoogleTest)
 gtest_discover_tests(Vec3Test)
 
-  # Chapter 3
-
-add_executable(blue_ray CPP/rt-in-one-weekend/src/ray_first.cpp)
-target_include_directories(blue_ray PUBLIC CPP/rt-in-one-weekend/include)
+  # Chapter 4
+  
+  add_executable(blue_ray ${ROOT_CPP_DIR}/src/ray_first.cpp)
+  target_include_directories(blue_ray PUBLIC CPP/rt-in-one-weekend/include)
+  
+  # Chapter 5
+  
+  add_executable(chapter_5 ${ROOT_CPP_DIR}/src/chapter5.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
+  target_include_directories(chapter_5 PUBLIC CPP/rt-in-one-weekend/include)
 
 
 
