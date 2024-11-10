@@ -41,6 +41,10 @@ gtest_discover_tests(Vec3Test)
   add_executable(chapter_5 ${ROOT_CPP_DIR}/src/chapter5.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
   target_include_directories(chapter_5 PUBLIC CPP/rt-in-one-weekend/include)
 
+  # Chapter 6
+  add_executable(chapter_6 ${ROOT_CPP_DIR}/src/chapter6.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
+  target_include_directories(chapter_6 PUBLIC CPP/rt-in-one-weekend/include)
+
 
 
 # CUDA
