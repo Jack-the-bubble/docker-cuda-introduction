@@ -3,13 +3,15 @@
 
 #include "Ray.h"
 
-namespace RT
-{
-struct HitRecord
-{
+namespace RT {
+
+class Material;
+
+struct HitRecord {
     float t; // scaling factor from A+tB
     Vec3 point; // originally p - ray? direction? point of hit?
     Vec3 normal;
+    Material *material_ptr;
 };
 
 class Hitable

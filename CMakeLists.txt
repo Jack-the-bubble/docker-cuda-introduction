@@ -31,12 +31,12 @@ include(GoogleTest)
 gtest_discover_tests(Vec3Test)
 
   # Chapter 4
-  
+
   add_executable(blue_ray ${ROOT_CPP_DIR}/src/ray_first.cpp)
   target_include_directories(blue_ray PUBLIC CPP/rt-in-one-weekend/include)
-  
+
   # Chapter 5
-  
+
   add_executable(chapter_5 ${ROOT_CPP_DIR}/src/chapter5.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
   target_include_directories(chapter_5 PUBLIC CPP/rt-in-one-weekend/include)
 
@@ -49,6 +49,11 @@ gtest_discover_tests(Vec3Test)
 
   add_executable(chapter_7 ${ROOT_CPP_DIR}/src/chapter7.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
   target_include_directories(chapter_7 PUBLIC CPP/rt-in-one-weekend/include)
+
+  # Chapter 8
+
+  add_executable(chapter_8 ${ROOT_CPP_DIR}/src/chapter8.cpp ${ROOT_CPP_DIR}/src/HitableList.cpp ${ROOT_CPP_DIR}/src/Sphere.cpp)
+  target_include_directories(chapter_8 PUBLIC CPP/rt-in-one-weekend/include)
 
 # CUDA
 

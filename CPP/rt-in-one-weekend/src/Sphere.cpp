@@ -20,6 +20,7 @@ bool Sphere::hit(const Ray &ray, const float t_min, const float t_max, HitRecord
             record.t = temp;
             record.point = ray.point_at_parameter(record.t);
             record.normal = (record.point - center_) / radius_;
+            record.material_ptr = material_;
             return true;
         }
         temp = (-b + sqrt(b*b - a * c)) / a;  // farther point hitting the sphere
@@ -28,6 +29,7 @@ bool Sphere::hit(const Ray &ray, const float t_min, const float t_max, HitRecord
             record.t = temp;
             record.point = ray.point_at_parameter(record.t);
             record.normal = (record.point - center_) / radius_;
+            record.material_ptr = material_;
             return true;
         }
     }

@@ -5,6 +5,7 @@
 #include <limits>
 
 #include "Hitable.h"
+#include "Material.h"
 
 float get_random()
 {
@@ -25,16 +26,24 @@ Vec3 get_random_in_unit_sphere()
     return point;
 }
 
-Vec3 color(const Ray &ray, const Hitable *world)
+Vec3 color(const Ray &ray, const Hitable *world, int depth)
 {
+    const int max_depth = 50;
     HitRecord record;
     const float max_float = std::numeric_limits<float>::max();
     if (world->hit(ray, 0.001, max_float, record))
     {
-        Vec3 target = record.point + record.normal + get_random_in_unit_sphere();
+        Ray scattered;
+        Vec3 attenuation;
+        if (depth < max_depth && record.material_ptr->scatter(ray, record, attenuation, scattered))
+        {
+            return attenuation * color(scattered, world, depth + 1);
+        }
+        return Vec3(0, 0, 0);
+        // Vec3 target = record.point + record.normal + get_random_in_unit_sphere();
         // mapping normal to color and scaling to (0, 1)
-        Vec3 ret_color = 0.5 * color(Ray(record.point, target-record.point), world);
-        return ret_color;
+        // Vec3 ret_color = 0.5 * color(Ray(record.point, target-record.point), world);
+        // return ret_color;
     }
 
     Vec3 unit_direction = unit_vector(ray.direction());
