@@ -20,11 +20,6 @@ public:
         }
     }
 
-    Vec3 reflect(const Vec3 &v, const Vec3 &n) const
-    {
-        return v - 2 * dot(v, n) * n;
-    }
-
     virtual bool scatter(const Ray &ray_in, const HitRecord &record, Vec3 &attenuation, Ray &scattered) const
     {
         Vec3 reflected = reflect(unit_vector(ray_in.direction()), record.normal);
