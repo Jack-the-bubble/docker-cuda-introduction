@@ -12,7 +12,7 @@
 int main() {
    const int nx = 200;
     int ny = nx / 2;
-    int ns = 100;
+    int ns = 100;  // antialiasing rays for a single pixel
     RT::Vec3 lower_left_corner = {-2.0, -1.0, -1.0};
     RT::Vec3 horizontal = {4.0, 0.0, 0.0};
     RT::Vec3 vertical = {0.0, 2.0, 0.0};
@@ -30,7 +30,7 @@ int main() {
     list[0] = new RT::Sphere(RT::Vec3(0, 0, -1), 0.5, lambertian_1);
     list[1] = new RT::Sphere(RT::Vec3(0, -100.5, -1), 100, lambertian_2);
     list[2] = new RT::Sphere(RT::Vec3(1, 0, -1), 0.5, metal_1);
-    list[3] = new RT::Sphere(RT::Vec3(-1, 0, -1), 0.5, dielectric);
+    list[3] = new RT::Sphere(RT::Vec3(-1, 0, -1), -0.5, dielectric);
     RT::Hitable *world = new RT::HitableList(list, 4);
     RT::Camera cam({-2.0, -1.0, -1.0}, {4.0, 0.0, 0.0}, {0.0, 2.0, 0.0}, {0.0, 0.0, 0.0});
 
