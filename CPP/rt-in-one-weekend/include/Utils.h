@@ -26,6 +26,16 @@ Vec3 get_random_in_unit_sphere()
     return point;
 }
 
+Vec3 get_random_in_unit_disk()
+{
+    Vec3 point;
+    do
+    {
+        point = 2.0 * Vec3(get_random(), get_random(), 0) - Vec3(1, 1, 0);
+    } while (dot(point, point) >= 1.0);
+    return point;
+}
+
 Vec3 color(const Ray &ray, const Hitable *world, int depth)
 {
     const int max_depth = 50;
