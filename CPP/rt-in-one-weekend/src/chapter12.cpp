@@ -9,16 +9,58 @@
 #include "Dielectric.h"
 #include "Camera.h"
 
-int main() {
-   const int nx = 500;
+RT::Hitable *random_scene()
+{
+    const int n = 500;
+    RT::Hitable **list = new RT::Hitable*[n+1];
+    list[0] = new RT::Sphere({0, -1000, 0}, 1000, new RT::Lambertian({0.5, 0.5, 0.5}));  //defining the wolrd sphere
+    int i = 1;
+    for (int a = -11; a < 11; a++)
+    {
+        for (int b = -11; b < 11; b++)
+        {
+            const float choose_material = get_random();
+            const RT::Vec3 center(a + 0.9 * get_random(), 0.2, b + 0.9 * get_random());
+            if ((center - RT::Vec3(4, 0.2, 0)).length() > 0.9)
+            {
+                if (choose_material < 0.8)  // diffuse material
+                {
+                    list[i++] = new RT::Sphere(center, 0.2, new RT::Lambertian({get_random() * get_random(), get_random() * get_random(), get_random() * get_random()}));
+                }
+                else if (choose_material < 0.95) // metal
+                {
+                    float x = 0.5 * (1 + get_random());
+                    float y = 0.5 * (1 + get_random());
+                    float z = 0.5 * (1 + get_random());
+                    list[i++] = new RT::Sphere(center, 0.2, new RT::Metal({x, y, z}, 0.5 * get_random()));
+                }
+                else  // glass
+                {
+                    list[i++] = new RT::Sphere(center, 0.2, new RT::Dielectric(1.5));
+                }
+            }
+        }
+    }
+
+    // add 3 big-ass spheres
+    list[i++] = new RT::Sphere({0, 1, 0}, 1.0, new RT::Dielectric(1.5));
+    list[i++] = new RT::Sphere({-4, 1, 0}, 1.0, new RT::Lambertian({0.4, 0.2, 0.1}));
+    list[i++] = new RT::Sphere({4, 1, 0}, 1.0, new RT::Metal({0.7, 0.6, 0.5}, 0.0));
+
+    return new RT::HitableList(list, i);
+}
+
+int main() 
+{
+   const int nx = 1000;
     int ny = nx / 2;
-    int ns = 100;  // antialiasing rays for a single pixel
+    int ns = 50;  // antialiasing rays for a single pixel
     RT::Vec3 lower_left_corner = {-2.0, -1.0, -1.0};
     RT::Vec3 horizontal = {4.0, 0.0, 0.0};
     RT::Vec3 vertical = {0.0, 2.0, 0.0};
     RT::Vec3 origin = {0.0, 0.0, 0.0};
     std::ofstream simple_ppm;
-    const auto file_path = std::filesystem::current_path() / "../CPP/rt-in-one-weekend/artifacts/chapter-11.ppm";
+    const auto file_path = std::filesystem::current_path() / "../CPP/rt-in-one-weekend/artifacts/chapter-12.ppm";
     simple_ppm.open(file_path);
     simple_ppm << "P3\n" <<nx << " " << ny << "\n255\n";
 
@@ -32,31 +74,34 @@ int main() {
     list[1] = new RT::Sphere(RT::Vec3(0, -100.5, -1), 100, lambertian_2);
     list[2] = new RT::Sphere(RT::Vec3(1, 0, -1), 0.5, metal_1);
     list[3] = new RT::Sphere(RT::Vec3(-1, 0, -1), 0.5, dielectric);
-    RT::Hitable *world = new RT::HitableList(list, 4);
+    RT::Hitable *world = random_scene();
 
     // big aperture
-    RT::Vec3 lookfrom = {3, 3, 2};
+    RT::Vec3 lookfrom = {3, 1, 3};
     RT::Vec3 lookat = {0, 0, -1};
     const float dist_to_focus = (lookfrom - lookat).length();
-    const float aperture = 0.5;
+    const float aperture = 0.05;
     RT::CameraParams cam_params =
     {
         lookfrom,
         lookat,
         {0, 1, 0},  // vector up
-        45, // vertical fov
+        90, // vertical fov
         float(nx) / float(ny), // aspect ratio
         aperture,
         dist_to_focus
     };
 
     RT::Camera cam(cam_params);
-    // RT::Camera cam({0, 0, 1}, {0, 0, -1}, {0, 1, 0}, 90, float(nx) / float(ny));
 
-    for (int j = ny - 1; j >=0; j--) {
-        for (int i = 0; i < nx; i++) {
+    for (int j = ny - 1; j >=0; j--) 
+    {
+        std::cout<<ny - j <<"/"<<ny<<"\n";
+        for (int i = 0; i < nx; i++) 
+        {
             RT::Vec3 col(0, 0, 0);
-            for (int s = 0; s < ns; s++) {
+            for (int s = 0; s < ns; s++) 
+            {
                 // antialiasing step: kinda wasteful when we're doing it for the whole image and not just the edges
                 const float u = float(i + get_random()) / float(nx);
                 const float v = float(j + get_random()) / float(ny);
