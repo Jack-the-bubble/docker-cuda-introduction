@@ -7,16 +7,17 @@ namespace RT {
 
 class Camera {
 public:
-    Camera(const Vec3 &lookfrom, const Vec3 &lookat, Vec3 &vector_up, const float vertical_fov, const float aspect_ratio): origin_(lookfrom)
+    Camera(const Vec3 &lookfrom, const Vec3 &lookat, const Vec3 &vector_up, const float vertical_fov, const float aspect_ratio) //: origin_(lookfrom)
     {
         Vec3 u, v, w;
         const float theta = vertical_fov * M_PI / 180;
         const float half_height = tan(theta / 2);  // from proportions
         const float half_width = aspect_ratio * half_height;
+        origin_ = lookfrom;
         w = unit_vector(lookfrom - lookat);
         u = unit_vector(cross(vector_up, w));
         v = cross(w, u);
-        lower_left_corner_ = origin_ - half_width * u = half_height * v - w;
+        lower_left_corner_ = origin_ - half_width * u - half_height * v - w;
         horizontal_ = 2 * half_width * u;
         vertical_ = 2 * half_height * v;
     }
@@ -41,6 +42,7 @@ public:
     {
         return Ray(origin_, lower_left_corner_ + u*horizontal_ + v*vertical_ - origin_);
     }
+
 private:
     Vec3 origin_;
     Vec3 lower_left_corner_;

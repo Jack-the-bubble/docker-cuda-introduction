@@ -23,13 +23,18 @@ int main() {
     simple_ppm << "P3\n" <<nx << " " << ny << "\n255\n";
 
     const float R = cos(M_PI / 4);
-    RT::Material *lambertian_1 = new RT::Lambertian({0, 0, 1});
-    RT::Material *lambertian_2 = new RT::Lambertian({1, 0, 0});
-    RT::Hitable *list[2];
-    list[0] = new RT::Sphere(RT::Vec3(-R, 0, -1), R, lambertian_1);
-    list[1] = new RT::Sphere(RT::Vec3(R, 0, -1), R, lambertian_2);
-    RT::Hitable *world = new RT::HitableList(list, 2);
-    RT::Camera cam(90, float(nx) / float(ny), {0, 0, 0});
+    RT::Material *lambertian_1 = new RT::Lambertian({0.8, 0.3, 0.3});
+    RT::Material *lambertian_2 = new RT::Lambertian({0.8, 0.8, 0.0});
+    RT::Material *metal_1 = new RT::Metal({0.8, 0.6, 0.2}, 0.2);
+    RT::Material *dielectric = new RT::Dielectric(1.5);
+    RT::Hitable *list[4];
+    list[0] = new RT::Sphere(RT::Vec3(0, 0, -1), 0.5, lambertian_1);
+    list[1] = new RT::Sphere(RT::Vec3(0, -100.5, -1), 100, lambertian_2);
+    list[2] = new RT::Sphere(RT::Vec3(1, 0, -1), 0.5, metal_1);
+    list[3] = new RT::Sphere(RT::Vec3(-1, 0, -1), 0.5, dielectric);
+    RT::Hitable *world = new RT::HitableList(list, 4);
+    RT::Camera cam({-2, 2, 1}, {0, 0, -1}, {0, 1, 0}, 45, float(nx) / float(ny));
+    // RT::Camera cam({0, 0, 1}, {0, 0, -1}, {0, 1, 0}, 90, float(nx) / float(ny));
 
     for (int j = ny - 1; j >=0; j--) {
         for (int i = 0; i < nx; i++) {
@@ -55,7 +60,11 @@ int main() {
     delete world;
     delete list[0];
     delete list[1];
+    delete list[2];
+    delete list[3];
     delete lambertian_1;
     delete lambertian_2;
+    delete metal_1;
+    delete dielectric;
     return 0;
 }
