@@ -39,6 +39,19 @@ target_include_directories(blue_ray PUBLIC CPP/rt-in-one-weekend/include)
 
 # CUDA
 
+# Chapter 1
+
+add_executable(gpu_1 GPU/chapter-1.cu)
+target_include_directories(gpu_1 PUBLIC GPU/include)
+set_property(TARGET gpu_1
+             PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+set_property(TARGET gpu_1
+             PROPERTY CUDA_ARCHITECTURES "61")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(gpu_1 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
+endif()
+
+
 add_executable(simple_add GPU/add.cu)
 set_property(TARGET simple_add
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
