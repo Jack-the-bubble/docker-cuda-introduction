@@ -75,6 +75,18 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(gpu_3 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
 endif()
 
+# Chapter 4
+
+add_executable(gpu_4 GPU/src/chapter-4.cu)
+target_include_directories(gpu_4 PUBLIC GPU/include)
+set_property(TARGET gpu_4
+             PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+set_property(TARGET gpu_4
+             PROPERTY CUDA_ARCHITECTURES "61")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(gpu_4 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
+endif()
+
 # init
 
 add_executable(simple_add GPU/add.cu)

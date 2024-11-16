@@ -151,6 +151,7 @@ __host__ __device__ inline Vec3 operator*(const float t, const Vec3 &v) {
     return Vec3(t * v[0], t * v[1], t * v[2]);
 }
 
+__host__ __device__
 inline float dot(const Vec3 &v1, const Vec3 &v2) {
     return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
