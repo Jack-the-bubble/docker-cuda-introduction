@@ -11,6 +11,7 @@ class Vec3 {
 public:
     Vec3 () = default;
     __host__ __device__ Vec3(const float e0, const float e1, const float e2): e{e0, e1, e2} {}
+    __host__ __device__ Vec3(const Vec3 &vec): e{vec.x(), vec.y(), vec.z()} {}
     __host__ __device__ inline float x() const {return e[0];}
     __host__ __device__ inline float y() const {return e[1];}
     __host__ __device__ inline float z() const {return e[2];}
@@ -25,7 +26,7 @@ public:
         if (i > 2)
         {
             // std::cout<<"operator[] accepts only integers less than 3."<<std::endl;
-            exit(-1);
+            return -1;
         }
         return e[i];
     }
@@ -36,7 +37,7 @@ public:
         if (i > 2)
         {
             // std::cout<<"operator[] accepts only integers less than 3."<<std::endl;
-            exit (-1);
+            return e[2];
         }
         return e[i];
     }
