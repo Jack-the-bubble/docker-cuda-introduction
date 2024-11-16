@@ -28,8 +28,8 @@ void render(RT::Vec3 *float_buffer, int nx, int ny,
         return;
     }
     const int pixel_idx = index_y * nx + index_x;
-    const float u = index_x / nx;
-    const float v = index_y / ny;
+    const float u = float(index_x) / float(nx);
+    const float v = float(index_y) / float(ny);
     RT::Ray ray(origin, lower_left_corner + u * horizontal + v * vertical);
     auto pixel_color = color(ray);
     float_buffer[pixel_idx] = pixel_color;
