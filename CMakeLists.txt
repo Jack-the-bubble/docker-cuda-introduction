@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_CPP_DIR CPP/rt-in-one-weekend)
+set(ROOT_GPU_DIR GPU)
 
 ############################### C++
 # Chapter 1
@@ -90,6 +91,18 @@ set_property(TARGET gpu_4
              PROPERTY CUDA_ARCHITECTURES "61")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(gpu_4 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
+endif()
+
+# Chapter 5
+
+add_executable(gpu_5 GPU/src/chapter-5.cu ${ROOT_GPU_DIR}/src/HitableList.cu ${ROOT_GPU_DIR}/src/Sphere.cu)
+target_include_directories(gpu_5 PUBLIC GPU/include)
+set_property(TARGET gpu_5
+             PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+set_property(TARGET gpu_5
+             PROPERTY CUDA_ARCHITECTURES "61")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(gpu_5 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
 endif()
 
 # init
