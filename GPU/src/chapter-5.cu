@@ -9,20 +9,6 @@
 #include "HitableList.h"
 #include "Ray.h"
 
-__device__
-bool hit_sphere(const RT::Vec3 &center, const float radius, const RT::Ray &ray) {
-    // need to study chapter 4 more carefully
-    const RT::Vec3 circle_origin = ray.origin() - center;
-
-    // parameters of quadratic equation at^2 + bt + c
-    const float a = RT::dot(ray.direction(), ray.direction());
-    const float b = 2.0f * RT::dot(circle_origin, ray.direction());
-    const float c = RT::dot(circle_origin, circle_origin) - radius * radius;
-
-    const float delta = b * b - 4 * a * c;
-    return delta > 0.0f;
-}
-
 __device__ RT::Vec3 color(const RT::Ray &ray, RT::Hitable **d_world) {
     // return normal vector converted to color if hit sphere
     RT::HitRecord record;

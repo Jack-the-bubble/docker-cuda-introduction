@@ -109,6 +109,18 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(gpu_5 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
 endif()
 
+# Chapter 6
+
+add_executable(gpu_6 GPU/src/chapter-6.cu ${ROOT_GPU_DIR}/src/HitableList.cu ${ROOT_GPU_DIR}/src/Sphere.cu)
+target_include_directories(gpu_6 PUBLIC GPU/include)
+set_property(TARGET gpu_6
+             PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+set_property(TARGET gpu_6
+             PROPERTY CUDA_ARCHITECTURES "61")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(gpu_6 PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-G>)
+endif()
+
 # init
 
 add_executable(simple_add GPU/add.cu)
