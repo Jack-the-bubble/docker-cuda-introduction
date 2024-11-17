@@ -53,7 +53,6 @@ __global__
 void render(RT::Vec3 *float_buffer, int nx, int ny, int ns, RT::Camera **cam,
             RT::Hitable **d_world, curandState *rand_state)
 {
-    *cam = new RT::Camera();
     int index_x = blockIdx.x * blockDim.x + threadIdx.x;
     int index_y = blockIdx.y * blockDim.y + threadIdx.y;
     if (index_x >= nx || index_y >= ny)
@@ -63,7 +62,6 @@ void render(RT::Vec3 *float_buffer, int nx, int ny, int ns, RT::Camera **cam,
     int pixel_idx = index_y * nx + index_x;
     curandState local_rand_state = rand_state[pixel_idx];
     RT::Vec3 col(0, 0, 0);
-    RT::Ray ray = (*cam)->get_ray(0, 1);
     for (int s = 0; s < ns; s++) {
         float f1 = curand_uniform(&local_rand_state);
         float f2 = curand_uniform(&local_rand_state);
@@ -74,12 +72,6 @@ void render(RT::Vec3 *float_buffer, int nx, int ny, int ns, RT::Camera **cam,
         col += color(ray, d_world);
     }
     col /= float(ns);
-    float col1 = col.r();
-    float col2 = col.g();
-    float col3 = col.b();
-    // RT::Ray ray(origin, lower_left_corner + u * horizontal + v * vertical);
-
-    // auto pixel_color = color(ray, d_world);
     float_buffer[pixel_idx] = col;
 }
 
@@ -91,7 +83,6 @@ void create_world(RT::Hitable **d_list, RT::Hitable **d_world, RT::Camera **d_ca
         *(d_list) = new RT::Sphere({0, 0, -1}, 0.5);
         *(d_list + 1) = new RT::Sphere({0, -100.5, -1}, 100);
         *d_world = new RT::HitableList(d_list, 2);
-        // *d_camera = new RT::Camera();
         *d_camera = new RT::Camera({-2.0, -1.0, -1.0}, {4.0, 0.0, 0.0}, {0.0, 2.0, 0.0}, {0.0, 0.0, 0.0});
     }
 }
@@ -108,11 +99,7 @@ void free_world(RT::Hitable **d_list, RT::Hitable **d_world, RT::Camera **d_came
 int main() {
     const int nx = 200;
     int ny = nx / 2;
-    int ns = 100;
-    // RT::Vec3 lower_left_corner = {-2.0, -1.0, -1.0};
-    // RT::Vec3 horizontal = {4.0, 0.0, 0.0};
-    // RT::Vec3 vertical = {0.0, 2.0, 0.0};
-    // RT::Vec3 origin = {0.0, 0.0, 0.0};
+    int ns = 50;
     const int num_pixels = nx * ny;
     size_t fb_size = num_pixels *sizeof(RT::Vec3);
 
